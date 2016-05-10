@@ -3,10 +3,10 @@
 *.suo
 *.user
 *.map
-*.js
 .vs/*
 bin/*
 obj/*
 packages/*
+src/**/*.js
 unitTests/**/*.js
 unitTests/**/*.map

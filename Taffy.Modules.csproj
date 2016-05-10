@@ -31,7 +31,7 @@
     <Content Include="Scripts\jasmine\jasmine-html.js" />
     <Content Include="Scripts\jasmine\jasmine.js" />
     <Content Include="UnitTests\canvas-tests.html" />
-    <Content Include="UnitTests\require1k.js" />
+    <Content Include="Scripts\require1k.js" />
     <Content Include="UnitTests\unit-tests.html" />
     <Content Include="web.config" />
   </ItemGroup>
