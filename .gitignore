@@ -1,0 +1,12 @@
+*.dll
+*.pdb
+*.suo
+*.user
+*.map
+*.js
+.vs/*
+bin/*
+obj/*
+packages/*
+unitTests/**/*.js
+unitTests/**/*.map
