@@ -1,6 +1,6 @@
 ﻿import {CanvasContext2D} from "../src/ui/CanvasContext2D";
 import * as System from "../src/System";
-import * as Random from "../src/Random";
+import {imageData} from "./image-data";
 
 namespace CanvasTests
 {
@@ -8,14 +8,29 @@ namespace CanvasTests
 
     System.ready(() =>
     {
-        context = new CanvasContext2D(document.getElementsByTagName("canvas").item(0));
-        testLinearGradient();
-        testRadialGradient();
-        testPattern();
-        testImageData();
-        testRoundedRectangle();
-        testDrawText();
+        let img = new Image();
+        img.src = "images/lamp.jpg";
+        img.addEventListener("load", () =>
+        {
+            context = new CanvasContext2D(document.getElementsByTagName("canvas").item(0));
+            testLinearGradient();
+            testRadialGradient();
+            testPattern(img);
+            testImageData();
+            testRoundedRectangle();
+            testDrawText();
+            validateImageData();
+        });
     });
+
+    function validateImageData()
+    {
+        //console.log(data);
+        let valid = (context.toDataUrl() === imageData);
+        document.getElementById("result").innerText = "Image data valid: " + valid;
+        document.getElementById("result").style.color = (valid ? "green" : "red");
+
+    }
 
     function testDrawText()
     {
@@ -41,10 +56,10 @@ namespace CanvasTests
         let data = imageData.data;
         for (let i = 0; i < data.length; i += 4)
         {
-            data[i] = Random.nextIntTo(255);
-            data[i + 1] = Random.nextIntTo(255);
-            data[i + 2] = Random.nextIntTo(255);
-            data[i + 3] = Random.nextIntTo(255);
+            data[i] = i % 255;
+            data[i + 1] = (i * 2) % 255;
+            data[i + 2] = (i * 3) % 255;
+            data[i + 3] = 255;
         }
         context.putImageData(imageData, 300, 0);
 
@@ -58,17 +73,12 @@ namespace CanvasTests
         context.putImageData(imageData, 300, 100);
     }
 
-    function testPattern()
+    function testPattern(img: HTMLImageElement)
     {
-        let img = new Image();
-        img.src = "images/lamp.jpg";
-        img.addEventListener("load", () =>
-        {
-            let pat = context.createPattern(img);
-            context.drawPattern(200, 0, 100, 100, pat);
-            context.drawPattern(200, 100, 100, 100, img, CanvasContext2D.Repetition.repeatY);
-            context.drawPattern(200, 100, 100, 100, img, CanvasContext2D.Repetition.repeatX);
-        });
+        let pat = context.createPattern(img);
+        context.drawPattern(200, 0, 100, 100, pat);
+        context.drawPattern(200, 100, 100, 100, img, CanvasContext2D.Repetition.repeatY);
+        context.drawPattern(200, 100, 100, 100, img, CanvasContext2D.Repetition.repeatX);
     }
 
     function testLinearGradient()

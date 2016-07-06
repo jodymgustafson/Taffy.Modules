@@ -32,6 +32,7 @@
     <Content Include="Scripts\jasmine\jasmine.js" />
     <Content Include="UnitTests\canvas-tests.html" />
     <Content Include="Scripts\require1k.js" />
+    <Content Include="UnitTests\images\lamp.jpg" />
     <Content Include="UnitTests\unit-tests.html" />
     <Content Include="web.config" />
   </ItemGroup>
@@ -59,6 +60,7 @@
     <TypeScriptCompile Include="src\ui\CanvasContext2D.ts" />
     <TypeScriptCompile Include="src\ui\Element.ts" />
     <TypeScriptCompile Include="UnitTests\canvas-tests.ts" />
+    <TypeScriptCompile Include="UnitTests\image-data.ts" />
     <TypeScriptCompile Include="UnitTests\specs\appStorageAsync.spec.ts" />
     <TypeScriptCompile Include="UnitTests\specs\AsyncActionTracker.spec.ts" />
     <TypeScriptCompile Include="UnitTests\specs\collections.map.spec.ts" />
