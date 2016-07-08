@@ -155,7 +155,7 @@ export function clearTimeout(handle: number): void
 export function ready(callback: () => any): void
 {
     // If the dom has been loaded it will not fire an event so need to check if loaded and fire the callback immediately
-    if (document.readyState == "complete")
+    if (document.readyState == "interactive" || document.readyState == "complete")
     {
         callback();
     }
