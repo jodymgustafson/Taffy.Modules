@@ -1,9 +1,17 @@
-﻿/// <reference path="iappstorageasync.ts" />
-"use strict";
+﻿import {IAppStorageAsync, IStorageEventAsync} from "./IAppStorageAsync";
 
 export enum AppStorageType
 {
     sync, local, managed
+}
+
+/** The underlying chrome storage object (if available) */
+export var chromeStorage = window["chrome"] ? window["chrome"]["storage"] : null;
+
+/** Used to determine if chrome storage available */
+export function isAvailable(): boolean
+{
+    return Boolean(chromeStorage);
 }
 
 interface StorageArea
@@ -19,12 +27,9 @@ interface StorageArea
 /**
     * Wraps Chrome storage to comply with the System.IAppStorageAsync interface.
     * Note: Chrome storage saves objects so you don't need to convert objects to json first.
-    * Therefore you could use 
     */
-export class AppStorageAsync implements Storage.IAppStorageAsync
+export class AppStorageAsync implements IAppStorageAsync
 {
-    private static _chromeStorage = window["chrome"] ? window["chrome"]["storage"] : null;
-    private static _isAvailable = Boolean(AppStorageAsync._chromeStorage);
 
     private _storageType: AppStorageType;
     private _storageArea: StorageArea;
@@ -33,7 +38,7 @@ export class AppStorageAsync implements Storage.IAppStorageAsync
     /** Used to determine if chrome storage available */
     public static get isAvailable(): boolean
     {
-        return AppStorageAsync._isAvailable;
+        return isAvailable();
     }
 
     /** @param appName Name of the application(optional) */
@@ -42,7 +47,7 @@ export class AppStorageAsync implements Storage.IAppStorageAsync
         if (AppStorageAsync.isAvailable)
         {
             this._storageType = storageType;
-            this._storageArea = AppStorageAsync._chromeStorage[AppStorageType[storageType]];
+            this._storageArea = chromeStorage[AppStorageType[storageType]];
             this._prefix = (appName ? appName + "." : "");
         }
     }
@@ -217,11 +222,11 @@ export class AppStorageAsync implements Storage.IAppStorageAsync
     }
 
     /** Adds a storage event handler */
-    public addStorageListener(callback: (evt: Storage.IStorageEventAsync) => any): AppStorageAsync
+    public addStorageListener(callback: (evt: IStorageEventAsync) => any): AppStorageAsync
     {
         if (AppStorageAsync.isAvailable)
         {
-            AppStorageAsync._chromeStorage.onChanged.addListener((changes: any, storageType: string) =>
+            chromeStorage.onChanged.addListener((changes: any, storageType: string) =>
             {
                 for (let key in changes)
                 {

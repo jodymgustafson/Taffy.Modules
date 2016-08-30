@@ -25,7 +25,7 @@ export function next(min: number = 0, max: number = 1): number
 */
 export function nextInt(min: number, max: number): number
 {
-    return next(min, max) | 0;
+    return next(min, max + 1) | 0;
 }
 
 /**
@@ -34,7 +34,7 @@ export function nextInt(min: number, max: number): number
 */
 export function nextIntTo(max: number): number
 {
-    return nextTo(max) | 0;
+    return nextTo(max + 1) | 0;
 }
 
 /**

@@ -45,7 +45,12 @@
     <TypeScriptCompile Include="src\audio\AudioManager.ts" />
     <TypeScriptCompile Include="src\audio\MultiChannelAudioClip.ts" />
     <TypeScriptCompile Include="src\audio\AudioLib.ts" />
+    <TypeScriptCompile Include="src\controllers\GameController.ts" />
+    <TypeScriptCompile Include="src\controllers\KeyboardGameController.ts" />
+    <TypeScriptCompile Include="src\controllers\MouseGameController.ts" />
+    <TypeScriptCompile Include="src\controllers\TouchGameController.ts" />
     <TypeScriptCompile Include="src\io\JsonFile.ts" />
+    <TypeScriptCompile Include="src\Rectangle.ts" />
     <TypeScriptCompile Include="src\storage\Chrome.AppStorageAsync.ts" />
     <TypeScriptCompile Include="src\collections\Map.ts" />
     <TypeScriptCompile Include="src\Convert.ts" />

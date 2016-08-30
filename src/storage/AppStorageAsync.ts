@@ -1,15 +1,20 @@
-﻿/// <reference path="iappstorageasync.ts" />
-"use strict";
+﻿import {IAppStorageAsync, IStorageEventAsync} from "./IAppStorageAsync";
 
-export class AppStorageAsync implements Storage.IAppStorageAsync
+var _isAvailable = Boolean(("localStorage" in window) && window["localStorage"]);
+/** Used to determine if local storage available */
+export function isAvailable(): boolean
+{
+    return _isAvailable;
+}
+
+export class AppStorageAsync implements IAppStorageAsync
 {
     private _prefix = "";
-    private static _isAvailable = Boolean(("localStorage" in window) && window["localStorage"]);
 
     /** Used to determine if local storage available */
     public static get isAvailable(): boolean
     {
-        return AppStorageAsync._isAvailable;
+        return isAvailable();
     }
 
     /** @param appName Name of the application(optional) */
@@ -165,7 +170,7 @@ export class AppStorageAsync implements Storage.IAppStorageAsync
     }
 
     /** Adds a storage event handler */
-    public addStorageListener(callback: (evt: Storage.IStorageEventAsync) => any): AppStorageAsync
+    public addStorageListener(callback: (evt: IStorageEventAsync) => any): AppStorageAsync
     {
         addEventListener("storage", (ev: StorageEvent) =>
         {

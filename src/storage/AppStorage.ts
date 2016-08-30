@@ -1,17 +1,20 @@
-﻿"use strict";
+﻿var _isAvailable = Boolean(("localStorage" in window) && window["localStorage"]);
+/** Used to determine if local storage available */
+export function isAvailable(): boolean
+{
+    return _isAvailable;
+}
 
 /**
-    * Wrapper for localstorage that optionally prefixes all keys with the app name
-    */
+* Wrapper for localstorage that optionally prefixes all keys with the app name
+*/
 export class AppStorage
 {
     private _prefix = "";
-    private static _isAvailable = Boolean(("localStorage" in window) && window["localStorage"]);
-
     /** Used to determine if local storage available */
     public static get isAvailable(): boolean
     {
-        return AppStorage._isAvailable;
+        return isAvailable();
     }
 
     /** @param appName Name of the application(optional) */

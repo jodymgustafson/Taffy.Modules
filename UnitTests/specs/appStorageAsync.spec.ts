@@ -1,11 +1,11 @@
 ﻿/// <reference path="../../scripts/typings/jasmine/jasmine.d.ts" />
-/// <reference path="../../src/storage/iappstorageasync.ts" />
+import {IAppStorageAsync} from "../../src/storage/IAppStorageAsync";
 import {AppStorageAsync} from "../../src/storage/AppStorageAsync";
-import * as Chrome from "../../src/storage/Chrome.AppStorageAsync";
+import * as ChromeStorage from "../../src/storage/Chrome.AppStorageAsync";
 
 describe("AppStorageAsync", () =>
 {
-    function addTest(testName: string, appStorage: Storage.IAppStorageAsync)
+    function addTest(testName: string, appStorage: IAppStorageAsync)
     {
         describe(testName, () =>
         {
@@ -200,17 +200,16 @@ describe("AppStorageAsync", () =>
         }
     }
 
-    function getChromeStorage(): Chrome.AppStorageAsync
+    function getChromeStorage(): ChromeStorage.AppStorageAsync
     {
         var chrome = (window["chrome"] = window["chrome"] || {});
         chrome.storage = chrome.storage || {};
         chrome.storage.local = chrome.storage.local || new MockChromeStorage();
-        Chrome.AppStorageAsync["_chromeStorage"] = chrome.storage;
-        Chrome.AppStorageAsync["_isAvailable"] = true;
-        let storage = new Chrome.AppStorageAsync(Chrome.AppStorageType.local, "TaffyUnitTests");
+        ChromeStorage.chromeStorage = chrome.storage;
+        let storage = new ChromeStorage.AppStorageAsync(ChromeStorage.AppStorageType.local, "TaffyUnitTests");
         return storage;
     }
 
     addTest("System.AppStorageAsync", new AppStorageAsync("TaffyUnitTests"));
-    addTest("Crome.AppStorage", getChromeStorage());
+    addTest("Chrome.AppStorage", getChromeStorage());
 });

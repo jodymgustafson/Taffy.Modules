@@ -44,6 +44,8 @@ export class AudioManager
 {
     private audios = new Map<HTMLAudioElement>();
     private static audioExt = AudioLib.getSupportedFileTypes()[0];
+    /** Set to true to bust browser caching of audio files */
+    public bustBrowserCache = false;
 
     /**
     * Creates an audio manager
@@ -72,8 +74,6 @@ export class AudioManager
             // Add event listeners
             if (onLoaded) audio.onload = () => onLoaded(audio);
             if (onError) audio.onerror = () => onError(audio);
-            // Add to cache
-            this.audios.setItem(name, audio);
         }
         else if (onLoaded)
         {
@@ -105,8 +105,6 @@ export class AudioManager
         {
             var audio = this.createAudio(name);
             tracker.addAction(new LoadAudioAction(audio, this.timeout));
-            // Add to cache
-            this.audios.setItem(name, audio);
         });
 
         return tracker;
@@ -123,7 +121,19 @@ export class AudioManager
         if (AudioLib.debug) AudioLib.log("Loading audio: " + name + AudioManager.audioExt);
         var audio = new Audio();
         audio.id = name;
-        audio.src = encodeURI(this.audioPath) + "/" + encodeURIComponent(name) + AudioManager.audioExt;
+        let src = encodeURI(this.audioPath) + "/" + encodeURIComponent(name) + AudioManager.audioExt;
+        if (this.bustBrowserCache)
+        {
+            src += "?_t=" + new Date().getTime();
+        }
+        audio.src = src;
+
+        if (!this.noCache)
+        {
+            // Add to cache
+            this.audios.setItem(name, audio);
+        }
+
         return audio;
     }
 }
