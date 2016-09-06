@@ -44,8 +44,11 @@ export class AudioManager
 {
     private audios = new Map<HTMLAudioElement>();
     private static audioExt = AudioLib.getSupportedFileTypes()[0];
-    /** Set to true to bust browser caching of audio files */
-    public bustBrowserCache = false;
+    /**
+    * If defined a parameter will be added to all urls for audio files and it's value will be set to this value.
+    * Use this as a version number to bust browser cache and make sure new versions of the files are loaded.
+    */
+    public cacheParameter: string;
 
     /**
     * Creates an audio manager
@@ -118,13 +121,13 @@ export class AudioManager
 
     private createAudio(name: string): HTMLAudioElement
     {
-        if (AudioLib.debug) AudioLib.log("Loading audio: " + name + AudioManager.audioExt);
+        if (AudioLib.debugEnabled()) AudioLib.log("Loading audio: " + name + AudioManager.audioExt);
         var audio = new Audio();
         audio.id = name;
         let src = encodeURI(this.audioPath) + "/" + encodeURIComponent(name) + AudioManager.audioExt;
-        if (this.bustBrowserCache)
+        if (this.cacheParameter)
         {
-            src += "?_t=" + new Date().getTime();
+            src += "?_v=" + this.cacheParameter;
         }
         audio.src = src;
 

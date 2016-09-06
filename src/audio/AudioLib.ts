@@ -1,10 +1,22 @@
 ﻿/**
 * The audio library provides support for working with audio files.
 */
-"use strict";
 
-/** Set to true to log debugging messages */
-export var debug = false;
+/** Used to get or set debug mode */
+window["AudioLib"] = window["AudioLib"] || {
+    debug: false
+};
+
+export function debugEnabled(enable: boolean): void;
+export function debugEnabled(): boolean;
+export function debugEnabled(enable?: boolean): any
+{
+    if (enable === void (0))
+    {
+        return window["AudioLib"].debug;
+    }
+    window["AudioLib"].debug = enable;
+}
 
 let _supportFileTypes: string[];
 
@@ -29,7 +41,7 @@ export function log(getMsg: () => string): void;
 export function log(msg: string): void;
 export function log(msg: any): void
 {
-    if (debug)
+    if (debugEnabled())
     {
         if (typeof (msg) === "function") msg = msg();
         console.log(msg);
