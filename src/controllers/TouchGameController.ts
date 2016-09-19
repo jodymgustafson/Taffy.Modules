@@ -33,9 +33,14 @@ export class TouchGameController extends GameController
         super("touch");
         this.element = new UIElement(element);
 
-        if (!directionZone)
+        if (!(this.fireArea = fireZone))
         {
-            directionZone = {
+            this.fireArea = new Rectangle();
+        }
+
+        if (!(this.directionArea = directionZone))
+        {
+            this.directionArea = {
                 top: 0,
                 bottom: 0,
                 left: 0,
@@ -98,8 +103,12 @@ export class TouchGameController extends GameController
     {
         evt.preventDefault();
         evt.stopPropagation();
-        let p = this.element.toElementPoint(evt.touches[0].pageX, evt.touches[0].pageY);
-        this.handleTouch(p.x, p.y);
+        // handle multiple touches (left and right hand)
+        for (let i = 0; i < evt.touches.length; i++)
+        {
+            let p = this.element.toElementPoint(evt.touches[i].pageX, evt.touches[i].pageY);
+            this.handleTouch(p.x, p.y);
+        }
     }
 
     protected onTouchStart(evt: TouchEvent): void
@@ -107,8 +116,12 @@ export class TouchGameController extends GameController
         evt.preventDefault();
         evt.stopPropagation();
         this.touching = true;
-        let p = this.element.toElementPoint(evt.touches[0].pageX, evt.touches[0].pageY);
-        this.handleTouch(p.x, p.y);
+        // handle multiple touches (left and right hand)
+        for (let i = 0; i < evt.touches.length; i++)
+        {
+            let p = this.element.toElementPoint(evt.touches[i].pageX, evt.touches[i].pageY);
+            this.handleTouch(p.x, p.y);
+        }
     }
 
     protected onTouchEnd(evt: TouchEvent): void

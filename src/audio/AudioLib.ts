@@ -31,6 +31,7 @@ export function getSupportedFileTypes(): string[]
         _supportFileTypes = [];
         var audio = new Audio();
         if (audio.canPlayType("audio/ogg")) _supportFileTypes.push(".ogg");
+        if (audio.canPlayType("audio/mp4")) _supportFileTypes.push(".m4a");
         if (audio.canPlayType("audio/mpeg")) _supportFileTypes.push(".mp3");
         if (audio.canPlayType("audio/wav")) _supportFileTypes.push(".wav");
     }
