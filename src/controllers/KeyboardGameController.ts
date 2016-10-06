@@ -49,6 +49,7 @@ export class KeyboardGameController extends GameController
         if (button)
         {
             this.triggerButtonDownEvent(button);
+            evt.preventDefault();
             return true;
         }
 
@@ -62,6 +63,7 @@ export class KeyboardGameController extends GameController
         if (button)
         {
             this.triggerButtonUpEvent(button);
+            evt.preventDefault();
             return true;
         }
 

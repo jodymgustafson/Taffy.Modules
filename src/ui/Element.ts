@@ -326,7 +326,7 @@ export class UIElement
     {
         if (this._htmlElement.classList)
         {
-            this._htmlElement.classList.contains(className);
+            return this._htmlElement.classList.contains(className);
         }
         else if (this._htmlElement.className)
         {

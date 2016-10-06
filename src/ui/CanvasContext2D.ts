@@ -585,13 +585,15 @@ export class CanvasContext2D
     ///////////////////////////////////////////////////////////////////////////
     public drawText(text: string, x: number, y: number, maxWidth?: number): CanvasContext2D
     {
-        this.context.strokeText(text, x, y, maxWidth);
+        if (maxWidth === undef) this.context.strokeText(text, x, y);
+        else this.context.strokeText(text, x, y, maxWidth);
         return this;
     }
 
     public fillText(text: string, x: number, y: number, maxWidth?: number): CanvasContext2D
     {
-        this.context.fillText(text, x, y, maxWidth);
+        if (maxWidth === undef) this.context.fillText(text, x, y);
+        else this.context.fillText(text, x, y, maxWidth);
         return this;
     }
 

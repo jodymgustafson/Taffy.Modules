@@ -12,10 +12,10 @@ export interface IDirectionZone
 }
 
 /**
- * Game controller that uses touch gestures.
- * When a touch happens in a zone it triggers a direction or fire events.
+ * Game controller that uses pointer events.
+ * When a pointer event happens in a zone it triggers a direction or fire event.
  */
-export class TouchGameController extends GameController
+export class PointerGameController extends GameController
 {
     protected directionArea: IDirectionZone;
     protected fireArea: Rectangle;
@@ -30,7 +30,7 @@ export class TouchGameController extends GameController
 
     constructor(element: HTMLElement, fireZone = new Rectangle(), directionZone?: IDirectionZone)
     {
-        super("touch");
+        super("pointer");
         this.element = new UIElement(element);
 
         if (!(this.fireArea = fireZone))
@@ -77,10 +77,10 @@ export class TouchGameController extends GameController
     {
         if (!this.connected)
         {
-            this.element.htmlElement.addEventListener("touchstart", (this._startHandler = evt => this.onTouchStart(evt)));
-            this.element.htmlElement.addEventListener("touchend", (this._endHandler = evt => this.onTouchEnd(evt)));
-            this.element.htmlElement.addEventListener("touchmove", (this._moveHandler = evt => this.onTouchMove(evt)));
-            this.element.htmlElement.addEventListener("touchcancel", (this._cancelHandler = evt => this.onTouchEnd(evt)));
+            this.element.htmlElement.addEventListener("pointerdown", (this._startHandler = evt => this.onPointerDown(evt)));
+            this.element.htmlElement.addEventListener("pointerup", (this._endHandler = evt => this.onPointerUp(evt)));
+            this.element.htmlElement.addEventListener("pointermove", (this._moveHandler = evt => this.onPointerMove(evt)));
+            this.element.htmlElement.addEventListener("pointercancel", (this._cancelHandler = evt => this.onPointerUp(evt)));
             return super.connect();
         }
         return true;
@@ -90,76 +90,69 @@ export class TouchGameController extends GameController
     {
         if (this.connected)
         {
-            this.element.htmlElement.removeEventListener("touchstart", this._startHandler);
-            this.element.htmlElement.removeEventListener("touchend", this._endHandler);
-            this.element.htmlElement.removeEventListener("touchmove", this._moveHandler);
-            this.element.htmlElement.removeEventListener("touchcancel", this._cancelHandler);
+            this.element.htmlElement.removeEventListener("pointerdown", this._startHandler);
+            this.element.htmlElement.removeEventListener("pointerup", this._endHandler);
+            this.element.htmlElement.removeEventListener("pointermove", this._moveHandler);
+            this.element.htmlElement.removeEventListener("pointercancel", this._cancelHandler);
             return super.disconnect();
         }
         return true;
     }
 
-    protected onTouchMove(evt: TouchEvent): void
+    private fireId = 0;
+    private directionId = 0;
+
+    protected onPointerMove(evt: PointerEvent): void
     {
         evt.preventDefault();
         evt.stopPropagation();
-        // handle multiple touches (left and right hand)
-        for (let i = 0; i < evt.touches.length; i++)
-        {
-            let t = evt.touches[i];
-            let p = this.element.toElementPoint(t.pageX, t.pageY);
-            this.handleTouch(p.x, p.y);
-        }
+        let p = this.element.toElementPoint(evt.x, evt.y);
+        this.handleTouch(evt.pointerId, p.x, p.y, false);
     }
 
-    protected onTouchStart(evt: TouchEvent): void
+    protected onPointerDown(evt: PointerEvent): void
     {
         evt.preventDefault();
         evt.stopPropagation();
         this.touching = true;
-        // handle multiple touches (left and right hand)
-        for (let i = 0; i < evt.touches.length; i++)
-        {
-            let t = evt.touches[i];
-            let p = this.element.toElementPoint(t.pageX, t.pageY);
-            this.handleTouch(p.x, p.y);
-        }
+        let p = this.element.toElementPoint(evt.x, evt.y);
+        this.handleTouch(evt.pointerId, p.x, p.y, true);
     }
 
-    protected onTouchEnd(evt: TouchEvent): void
+    protected onPointerUp(evt: PointerEvent): void
     {
         evt.preventDefault();
         evt.stopPropagation();
         if (this.touching)
         {
             this.touching = false;
-            for (let i = 0; i < evt.changedTouches.length; i++)
+            if (evt.pointerId === this.fireId)
             {
-                let t = evt.changedTouches[i];
-                let p = this.element.toElementPoint(t.pageX, t.pageY);
-                if (this.fireArea.contains(p.x, p.y))
-                {
-                    this.triggerButtonUpEvent(ControllerButton.FIRE);
-                }
-                else if (this.directionArea.bounds.contains(p.x, p.y))
-                {
-                    this.triggerButtonUpEvent(ControllerButton.LEFT);
-                    this.triggerButtonUpEvent(ControllerButton.RIGHT);
-                    this.triggerButtonUpEvent(ControllerButton.DOWN);
-                    this.triggerButtonUpEvent(ControllerButton.UP);
-                }
+                this.fireId = 0;
+                this.triggerButtonUpEvent(ControllerButton.FIRE);
+            }
+            else if (evt.pointerId === this.directionId)
+            {
+                this.directionId = 0;
+                this.triggerButtonUpEvent(ControllerButton.LEFT);
+                this.triggerButtonUpEvent(ControllerButton.RIGHT);
+                this.triggerButtonUpEvent(ControllerButton.DOWN);
+                this.triggerButtonUpEvent(ControllerButton.UP);
             }
         }
     }
 
-    protected handleTouch(x: number, y: number): void
+    protected handleTouch(id: number, x: number, y: number, start: boolean): void
     {
         if (this.fireArea.contains(x, y))
         {
+            if (start) this.fireId = id;
             this.triggerButtonDownEvent(ControllerButton.FIRE);
         }
         else if (this.directionArea.bounds.contains(x, y))
         {
+            if (start) this.directionId = id;
+
             if (y < this.directionArea.top) // up
             {
                 this.triggerButtonUpEvent(ControllerButton.DOWN);

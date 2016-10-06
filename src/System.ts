@@ -81,6 +81,11 @@ export function isTouchSupported(): boolean
 {
     return ("ontouchstart" in document.documentElement);
 }
+/** Returns true of the browser supports pointer events */
+export function isPointerSupported(): boolean
+{
+    return ("onpointerdown" in document.documentElement);
+}
 /** Returns true of the browser supports mouse events */
 export function isMouseSupported(): boolean
 {
