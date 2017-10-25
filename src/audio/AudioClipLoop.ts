@@ -1,6 +1,5 @@
 ﻿import {AudioClip} from "./AudioClip";
 
-"use strict";
 /** Implements an audio clip that loops properly */
 export class AudioClipLoop extends AudioClip
 {

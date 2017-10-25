@@ -2,8 +2,6 @@
 import * as Convert from "./Convert";
 import * as System from "./System";
 
-"use strict";
-
 /**
  * An immutable color object
  * Usage: import {Color} from "./Color";

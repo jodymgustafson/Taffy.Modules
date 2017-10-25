@@ -1,6 +1,4 @@
-﻿"use strict";
-
-/**
+﻿/**
  * A class for storing and manipulating an unsigned byte value (0 to 255)
  * Usage: import {Byte} from "./Byte";
  */

@@ -1,8 +1,6 @@
 ﻿import {AudioClip} from "./AudioClip";
 import * as AudioLib from "./AudioLib";
 
-"use strict";
-
 /** The maximum number of audio channels allowed per audio element */
 export var maxAudioChannels = 4;
 

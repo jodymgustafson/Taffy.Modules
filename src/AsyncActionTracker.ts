@@ -1,5 +1,4 @@
 ﻿import {IAsyncAction} from "./AsyncAction";
-"use strict";
 
 /**
 * Used to track the progress of any number of async actions, usually loading external resources.

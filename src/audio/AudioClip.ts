@@ -1,5 +1,4 @@
-﻿"use strict";
-/** Wrapper for HTML5 audio */
+﻿/** Wrapper for HTML5 audio */
 export class AudioClip
 {
     protected audioElement: HTMLAudioElement;

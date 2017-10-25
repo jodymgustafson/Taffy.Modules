@@ -1,5 +1,4 @@
 ﻿import * as System from "./System";
-"use strict";
 
 /** Parses a string into a decimal number (i.e. not an integer) */
 export function toFloat(str: string): number

@@ -1,6 +1,4 @@
-﻿"use strict";
-
-export interface IAsyncAction
+﻿export interface IAsyncAction
 {
     /** Adds a function to be called when the action is completed */
     onCompleted: (callback: (action: IAsyncAction) => any) => IAsyncAction;

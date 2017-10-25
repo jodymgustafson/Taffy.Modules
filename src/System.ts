@@ -174,10 +174,10 @@ export function ready(callback: () => any): void
 (() =>
 {
 // Normalize requestAnimationFrame
-window.requestAnimationFrame = window.requestAnimationFrame || window.msRequestAnimationFrame || window["webkitRequestAnimationFrame"] || window["mozRequestAnimationFrame"] ||
+window.requestAnimationFrame = window.requestAnimationFrame || window["msRequestAnimationFrame"] || window["webkitRequestAnimationFrame"] || window["mozRequestAnimationFrame"] ||
 function (callback: FrameRequestCallback)
 {
     return setTimeout(callback, 0);
 };
-window.cancelAnimationFrame = window.cancelAnimationFrame || window.msCancelRequestAnimationFrame || window["mozCancelAnimationFrame"] || function (handle: number) { };
+window.cancelAnimationFrame = window.cancelAnimationFrame || window["msCancelRequestAnimationFrame"] || window["mozCancelAnimationFrame"] || function (handle: number) { };
 })();

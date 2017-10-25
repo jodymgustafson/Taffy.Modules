@@ -4,7 +4,6 @@ import {AsyncAction} from "../AsyncAction";
 import {AsyncActionTracker} from "../AsyncActionTracker";
 import {Map} from "../collections/Map";
 
-"use strict";
 /**
  * An async action for loading audio files using an AsyncActionTracker
  */
